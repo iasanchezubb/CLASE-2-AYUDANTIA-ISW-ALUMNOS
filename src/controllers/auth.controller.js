@@ -36,3 +36,26 @@ export async function register(req, res) {
     }
   }
 }
+
+import { UserQueryValidation } from "../validations/user.validation.js";
+
+export async function getUser(req, res) {
+  try {
+    const { query } = req;
+
+    const { error } = UserQueryValidation.validate(query);
+    if (error) {
+      return handleErrorClient(res, 400, "Parámetros inválidos", error.message);
+    }
+
+    const [user, errorUser] = await getUserService(query);
+    if (errorUser) {
+      return handleErrorClient(res, 404, "Error al obtener el usuario", errorUser);
+    }
+
+    handleSuccess(res, 200, "Usuario encontrado", user);
+  } catch (error) {
+    handleErrorServer(res, 500, "Error interno del servidor", error.message);
+  }
+}
+
