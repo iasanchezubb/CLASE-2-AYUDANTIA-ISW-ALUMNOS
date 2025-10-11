@@ -2,6 +2,8 @@ import { loginUser } from "../services/auth.service.js";
 import { createUser } from "../services/user.service.js";
 import { handleSuccess, handleErrorClient, handleErrorServer } from "../Handlers/responseHandlers.js";
 
+import { UserQueryValidation } from "../services/user.validation.js";
+
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
